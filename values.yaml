@@ -1,0 +1,34 @@
+controller:
+  # config:
+  #   use-gzip: true
+  #   gzip-level: 1
+  #   gzip-min-length: 512
+  #   gzip-types: "*"
+  # extraArgs:
+  #   enable-ssl-passthrough: true 
+  nodeSelector:
+    beta.kubernetes.io/os: "linux"
+  replicaCount: 2
+  # publishService:
+  #   enabled: true
+  # admissionWebhooks:
+  #   nodeSelector:
+  #     beta.kubernetes.io/os: "linux"
+  # metrics:
+  #   enabled: true
+    # serviceMonitor:
+    #   enabled: true
+    #   additionalLabels: {}
+    #   namespace: ""
+    #   namespaceSelector: {}
+    #   scrapeInterval: "30s"
+  service:
+    annotations:
+      service.beta.kubernetes.io/azure-dns-label-name: "alfredo-aks"
+      service.beta.kubernetes.io/azure-load-balancer-resource-group: "${azurerm_resource_group.k8s.name}"
+    loadBalancerIP: "${azurerm_public_ip.nginx-public-ip.ip_address}"
+    externalTrafficPolicy: "Local"
+defaultBackend:
+  enabled: true
+  nodeSelector:
+    kubernetes.io/os: "linux"
